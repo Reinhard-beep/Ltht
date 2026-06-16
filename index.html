@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="theme-color" content="#0A1F44"/>
+<meta name="description" content="LTHT - Logistics and Transport Hub Tanzania. Unganisha wamiliki wa mizigo na wamiliki wa magari."/>
+<title>LTHT - Logistics and Transport Hub Tanzania</title>
+<link rel="manifest" href="manifest.json"/>
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png"/>
+<link rel="apple-touch-icon" href="icons/icon-192.png"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#F3F4F6;min-height:100vh}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+input,select,textarea{font-family:inherit;outline:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.2);opacity:.6}}
+@keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes starfield{from{background-position:0 0}to{background-position:0 1000px}}
+.spin{animation:spin .8s linear infinite}
+.pulse-anim{animation:pulse 2s ease-in-out infinite}
+.slide-up{animation:slideUp .3s cubic-bezier(.16,1,.3,1)}
+.fade-in{animation:fadeIn .35s ease both}
+.app-wrap{max-width:480px;margin:0 auto;position:relative;min-height:100vh;background:#F3F4F6}
+.admin-wrap{width:100%;min-height:100vh;display:flex;font-family:'Segoe UI',system-ui,sans-serif}
+
+/* ── LTHT BRAND COLORS ──
+   Navy:   #0A1F44 (deep night-sky navy from poster)
+   Navy2:  #142850 (lighter navy panel)
+   Red:    #E63946 (route ribbon red)
+   Blue:   #2A6EBB (route ribbon blue)
+   Gold:   #D4AF6A (accent gold - kept from logistics branding)
+*/
+.card{background:#fff;border-radius:16px;border:1px solid #F3F4F6;box-shadow:0 1px 6px rgba(0,0,0,.06)}
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700}
+.b-open{background:#DCEBFF;color:#1D4ED8}
+.b-assigned{background:#FEF3C7;color:#B45309}
+.b-in_transit{background:#FCE2E4;color:#E63946}
+.b-arrived_pickup{background:#FFEDD5;color:#C2410C}
+.b-delivered{background:#D1FAE5;color:#065F46}
+.b-pending{background:#FEF3C7;color:#B45309}
+.b-approved{background:#D1FAE5;color:#065F46}
+.b-rejected{background:#FEE2E2;color:#B91C1C}
+.b-active{background:#D1FAE5;color:#065F46}
+.inp{width:100%;border:1.5px solid #E5E7EB;border-radius:12px;padding:11px 14px;font-size:13px;background:#F9FAFB;transition:border .2s;box-sizing:border-box}
+.inp:focus{border-color:#0A1F44;background:#fff}
+.inp-pl{padding-left:38px}
+.inp-wrap{margin-bottom:14px}
+.inp-lbl{display:block;font-size:12px;font-weight:600;color:#374151;margin-bottom:6px}
+.inp-lbl span{color:#EF4444}
+.inp-rel{position:relative}
+.inp-rel svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:#9CA3AF;pointer-events:none}
+select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239CA3AF' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;appearance:none}
+textarea.inp{resize:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-weight:700;border-radius:12px;padding:11px 18px;font-size:13px;transition:all .15s;border:none;font-family:inherit}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-primary{background:#0A1F44;color:#fff}
+.btn-danger{background:#E63946;color:#fff}
+.btn-success{background:#10B981;color:#fff}
+.btn-ghost{background:#F3F4F6;color:#374151}
+.btn-gold{background:#D4AF6A;color:#0A1F44}
+.btn-full{width:100%}
+.btn-lg{padding:14px 18px;font-size:14px}
+.load-card{background:#fff;border-radius:16px;border:1px solid #F3F4F6;box-shadow:0 1px 4px rgba(0,0,0,.05);margin-bottom:10px;cursor:pointer;transition:box-shadow .2s,transform .15s}
+.load-card:active{transform:scale(.99)}
+.lc-body{padding:14px}
+.dot-g{width:8px;height:8px;border-radius:50%;background:#10B981;flex-shrink:0;display:inline-block}
+.dot-r{width:8px;height:8px;border-radius:50%;background:#E63946;flex-shrink:0;display:inline-block}
+.mock-map{position:relative;border-radius:16px;overflow:hidden;border:1px solid #E5E7EB;background:linear-gradient(135deg,#EAF1FB 0%,#F0FDF4 100%)}
+.map-city{position:absolute;transform:translate(-50%,-50%);text-align:center}
+.map-dot{width:7px;height:7px;border-radius:50%;background:#0A1F44;border:1.5px solid #fff;margin:0 auto;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.map-lbl{font-size:8px;font-weight:600;color:#0A1F44;white-space:nowrap;margin-top:2px}
+.pin-g{position:absolute;width:14px;height:14px;border-radius:50%;background:#10B981;border:2px solid #fff;box-shadow:0 0 0 4px rgba(16,185,129,.2);transform:translate(-50%,-50%)}
+.pin-r{position:absolute;width:14px;height:14px;border-radius:50%;background:#E63946;border:2px solid #fff;transform:translate(-50%,-50%)}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid #F3F4F6;padding:6px 8px;display:grid;gap:4px;z-index:50}
+.nb{display:flex;flex-direction:column;align-items:center;padding:8px 4px;border-radius:12px;border:none;background:transparent;color:#9CA3AF;cursor:pointer;transition:all .2s;font-family:inherit}
+.nb.on{background:#EAF1FB;color:#0A1F44}
+.nb span{font-size:10px;font-weight:700;margin-top:3px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:#fff;border-radius:24px 24px 0 0;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;animation:slideUp .3s cubic-bezier(.16,1,.3,1)}
+.center-modal{background:#fff;border-radius:20px;width:100%;max-width:400px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:fadeIn .25s ease}
+.asidebar{background:#0A1F44;display:flex;flex-direction:column;min-height:100vh;width:220px;flex-shrink:0;transition:width .2s}
+.anb{width:100%;display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;border:none;background:transparent;color:rgba(255,255,255,.45);cursor:pointer;text-align:left;transition:all .15s;font-size:13px;font-weight:600;font-family:inherit;margin-bottom:3px}
+.anb:hover{color:#fff;background:rgba(255,255,255,.08)}
+.anb.on{color:#fff;background:rgba(255,255,255,.14)}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{padding:11px 14px;text-align:left;font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.5px;background:#F9FAFB;white-space:nowrap}
+.tbl td{padding:12px 14px;border-top:1px solid #F9FAFB;font-size:13px}
+.tbl tr:hover td{background:#FAFAFA}
+.prog{height:6px;background:#F3F4F6;border-radius:99px;overflow:hidden}
+.prog-bar{height:6px;border-radius:99px;transition:width .5s ease}
+.ndot{position:absolute;top:-4px;right:-4px;width:18px;height:18px;background:#E63946;border-radius:50%;font-size:9px;font-weight:800;color:#fff;display:flex;align-items:center;justify-content:center}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:#D1D5DB;border-radius:99px}
+
+/* ── LANDING: starfield + route ribbon (LTHT poster style) ── */
+.ltht-landing{min-height:100vh;background:linear-gradient(180deg,#050C1F 0%,#0A1F44 45%,#142850 100%);display:flex;flex-direction:column;position:relative;overflow:hidden}
+.ltht-landing::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,.5) 50%, transparent 50%),
+                   radial-gradient(1px 1px at 60px 80px, rgba(255,255,255,.4) 50%, transparent 50%),
+                   radial-gradient(1px 1px at 100px 20px, rgba(255,255,255,.3) 50%, transparent 50%),
+                   radial-gradient(1.5px 1.5px at 140px 100px, rgba(255,255,255,.5) 50%, transparent 50%),
+                   radial-gradient(1px 1px at 180px 50px, rgba(255,255,255,.35) 50%, transparent 50%),
+                   radial-gradient(1px 1px at 30px 130px, rgba(255,255,255,.4) 50%, transparent 50%);
+  background-size:200px 200px;opacity:.6;pointer-events:none;
+}
+.ltht-ribbon{position:absolute;top:0;left:0;right:0;height:220px;pointer-events:none;opacity:.85}
+
+@media(max-width:768px){
+  .asidebar{width:56px}
+  .sbt{display:none}
+  .stats-grid{grid-template-columns:repeat(2,1fr)!important}
+  .agrid2{grid-template-columns:1fr!important}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="app.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
+</script>
+</body>
+</html>
