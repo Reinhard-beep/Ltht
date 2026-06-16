@@ -151,8 +151,8 @@ function pgLanding() {
     '<button onclick="navigate(\'register\')" style="width:100%;background:rgba(255,255,255,.08);color:#fff;font-weight:700;font-size:15px;padding:16px;border-radius:14px;border:1px solid rgba(255,255,255,.18);cursor:pointer">Fungua Akaunti / Register</button>' +
     '</div>' +
     '<div style="width:100%;max-width:340px"><div style="color:rgba(255,255,255,.3);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">&#9889; Demo Quick Access</div>' +
-    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">' +
-    [['cargo','&#128230;','Mwenye Mzigo','#93C5FD'],['driver','&#128665;','Mwenye Gari','#6EE7B7'],['admin','&#128272;','Admin','#FCD34D']].map(function(r){ return '<button onclick="demoLogin(\'' + r[0] + '\')" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px"><span style="font-size:22px">' + r[1] + '</span><span style="font-size:11px;font-weight:700;color:' + r[3] + '">' + r[2] + '</span></button>'; }).join('') +
+    '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">' +
+    [['cargo','&#128230;','Mwenye Mzigo','#93C5FD'],['driver','&#128665;','Mwenye Gari','#6EE7B7']].map(function(r){ return '<button onclick="demoLogin(\'' + r[0] + '\')" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px"><span style="font-size:22px">' + r[1] + '</span><span style="font-size:11px;font-weight:700;color:' + r[3] + '">' + r[2] + '</span></button>'; }).join('') +
     '</div></div></div>' +
     '<div style="text-align:center;padding:0 0 20px;color:rgba(255,255,255,.25);font-size:11px;position:relative;z-index:1">CONTACTS: +255 762 503 883 | EMAIL: chapchapdel2023@gmail.com</div></div>';
 }
@@ -175,7 +175,7 @@ function pgLogin() {
     '<div style="text-align:center;margin-top:20px;font-size:13px"><span style="color:#6B7280">Hauna akaunti? </span><button onclick="navigate(\'register\')" style="color:#0A1F44;font-weight:700;background:none;border:none;cursor:pointer;font-size:13px">Jisajili hapa</button></div>' +
     '<div style="margin-top:24px;background:#EAF1FB;border:1px solid #BFDBFE;border-radius:14px;padding:14px">' +
     '<div style="font-size:11px;font-weight:700;color:#1D4ED8;margin-bottom:4px">&#128161; Demo Hint</div>' +
-    '<div style="font-size:12px;color:#2A6EBB;line-height:1.6">Email yenye "admin" &#8594; Admin. "driver" &#8594; Driver. Email yoyote nyingine &#8594; Cargo Owner.</div></div></div></div>';
+    '<div style="font-size:12px;color:#2A6EBB;line-height:1.6">Email yenye "driver" &#8594; Driver. Email yoyote nyingine &#8594; Cargo Owner.</div></div></div></div>';
 }
 
 function pgRegister() {
@@ -585,14 +585,19 @@ function demoLogin(role) {
 
 function doLogin() {
   var email = (document.getElementById('l-email')||{}).value || '';
+  var pw = (document.getElementById('l-pw')||{}).value || '';
   var errEl = document.getElementById('login-err');
   if (!email) { if(errEl){errEl.style.display='block';errEl.textContent='Tafadhali jaza barua pepe yako.';} return; }
   var btn = document.getElementById('l-btn');
   if (btn) { btn.innerHTML='<div style="width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite"></div> Inaingia...'; btn.disabled=true; }
   setTimeout(function() {
-    if (email.indexOf('admin') !== -1) demoLogin('admin');
-    else if (email.indexOf('driver') !== -1 || email.indexOf('peter') !== -1) demoLogin('driver');
-    else demoLogin('cargo');
+    if (email.toLowerCase() === 'admin@ltht.co.tz' && pw === 'LTHT2025admin') {
+      demoLogin('admin');
+    } else if (email.indexOf('driver') !== -1 || email.indexOf('peter') !== -1) {
+      demoLogin('driver');
+    } else {
+      demoLogin('cargo');
+    }
   }, 900);
 }
 
